@@ -82,20 +82,32 @@ def executar_equipes_homologadas(driver, pasta_download):
 
         # Ajustar o tempo conforme necessário
         print("Aguardando o download do arquivo...")
-        time.sleep(60)  # Ajustar conforme a necessidade
+        time.sleep(30)  # Ajustar conforme a necessidade
 
         # Verifique o nome do arquivo baixado
         arquivos_csv = glob.glob(os.path.join(pasta_download, '*.csv'))
-        if arquivos_csv:
-            arquivo_original = arquivos_csv[0]  # Pode haver mais de um arquivo, escolha o mais recente
+        arquivo_cadastro_individual = os.path.join(pasta_download, 'cadastro-individual.csv')
+        arquivos_para_renomear = [f for f in arquivos_csv if not f.startswith(os.path.join(pasta_download, 'sisab_todas_equipes'))]
+
+        if arquivos_para_renomear:
+            arquivo_original = arquivos_para_renomear[0]  # Pode haver mais de um arquivo, escolha o mais recente
             nome_arquivo_csv = f'sisab_equipes_homologadas_{valor_desejado}.csv'
             caminho_csv = os.path.join(pasta_download, nome_arquivo_csv)
 
-            # Renomear o arquivo
-            os.rename(arquivo_original, caminho_csv)
-            print(f"Arquivo CSV renomeado com sucesso para: {caminho_csv}")
+            # Verifica se já existe um arquivo com o mesmo nome
+            if not os.path.exists(caminho_csv):
+                # Renomear o arquivo
+                os.rename(arquivo_original, caminho_csv)
+                print(f"Arquivo CSV renomeado com sucesso para: {caminho_csv}")
+            else:
+                print(f"O arquivo {nome_arquivo_csv} já existe e não será alterado.")
         else:
-            raise FileNotFoundError("Nenhum arquivo CSV encontrado para renomear.")
+            print("Nenhum arquivo CSV válido encontrado para renomear.")
+
+        # Exclusão do arquivo `cadastro-individual.csv` se existir
+        if os.path.exists(arquivo_cadastro_individual):
+            os.remove(arquivo_cadastro_individual)
+            print(f"Arquivo {arquivo_cadastro_individual} excluído.")
 
     finally:
         print("SCRIPT FINALIZADO")

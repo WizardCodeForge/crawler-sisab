@@ -66,7 +66,7 @@ def executar_todas_equipes(driver, pasta_download):
         time.sleep(30)
         
         # Nome do arquivo CSV com o valor da checkbox
-        nome_arquivo_csv = f'sisab__{valor_desejado}.csv'
+        nome_arquivo_csv = f'sisab_todas_equipes_{valor_desejado}.csv'
         caminho_csv = os.path.join(pasta_download, nome_arquivo_csv)
 
         if os.path.exists(caminho_csv):
