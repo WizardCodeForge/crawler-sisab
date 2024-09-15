@@ -45,13 +45,35 @@ try:
 
     # Aguarde e selecione a caixa "Competência"
     try:
-        competencia = WebDriverWait(driver, 100).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, '#componente-competencia'))
+        competencia_select = WebDriverWait(driver, 100).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, '#competencia'))
         )
-        select_competencia = Select(competencia)
-        # Selecione o primeiro valor disponível
-        first_option = select_competencia.options[1]  # geralmente a primeira opção é um texto vazio
-        select_competencia.select_by_visible_text(first_option.text)
+        # Obter todas as opções
+        options = competencia_select.find_elements(By.TAG_NAME, 'option')
+
+        if options:
+            # Encontrar a opção com o maior valor
+            max_value_option = max(options, key=lambda opt: int(opt.get_attribute('value')) if opt.get_attribute('value').isdigit() else -1)
+            max_value = max_value_option.get_attribute('value')
+            max_value_text = max_value_option.text
+
+            # Selecionar a opção encontrada usando JavaScript
+            driver.execute_script("arguments[0].selected = true;", max_value_option)
+            driver.execute_script("arguments[0].dispatchEvent(new Event('change', { bubbles: true }));", max_value_option)
+            print(f"Selecionado valor: {max_value}")
+
+            # Encontrar e clicar no botão correspondente ao valor selecionado
+            try:
+                # Esperar que o botão correspondente esteja presente e visível
+                button = WebDriverWait(driver, 100).until(
+                    EC.presence_of_element_located((By.XPATH, f"//button[@title='{max_value_text}']"))
+                )
+                button.click()
+                print(f"Botão selecionado: {max_value_text}")
+            except Exception as e:
+                print("Erro ao selecionar o botão correspondente:", e)
+        else:
+            print("Nenhuma opção encontrada no seletor 'Competência'")
     except Exception as e:
         print("Erro ao selecionar 'Competência':", e)
 
