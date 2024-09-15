@@ -7,7 +7,7 @@ def main():
     driver = setup_driver()
 
     # Caminho onde o CSV será salvo
-    pasta_download = 'C:\\Users\\LKeuu\\OneDrive\\Documentos\\CSV'  # Usar scape com \\ para especificar caminho
+    pasta_download = 'C:\\Users\\LKeuu\\OneDrive\\Documentos\\CSV\\'  # Usar scape com \\ para especificar caminho
     os.makedirs(pasta_download, exist_ok=True)
 
     # Executar o primeiro script

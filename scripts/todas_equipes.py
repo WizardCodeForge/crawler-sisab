@@ -60,7 +60,7 @@ def executar_todas_equipes(driver, pasta_download):
         except Exception as e:
             print("Erro ao clicar no botão de download ou selecionar a opção CSV:", e)
 
-        time.sleep(300)
+        time.sleep(100)
         nome_arquivo_csv = 'relatorio.csv'
         caminho_csv = os.path.join(pasta_download, nome_arquivo_csv)
 

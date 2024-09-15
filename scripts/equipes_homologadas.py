@@ -77,8 +77,10 @@ def executar_equipes_homologadas(driver, pasta_download):
             print("Erro ao clicar no botão de download ou selecionar a opção CSV:", e)
             driver.save_screenshot("screenshot.png")
 
-        time.sleep(300)
-        nome_arquivo_csv = 'relatorio.csv'
+        time.sleep(100)
+        
+        # Nome do arquivo CSV com o valor da checkbox
+        nome_arquivo_csv = f'sisab_equipes_homologadas_{valor_desejado}.csv'
         caminho_csv = os.path.join(pasta_download, nome_arquivo_csv)
 
         if os.path.exists(caminho_csv):
