@@ -5,6 +5,8 @@ import os
 import time
 
 def executar_todas_equipes(driver, pasta_download):
+    valor_desejado = None
+
     try:
         driver.get('https://sisab.saude.gov.br/paginas/acessoRestrito/relatorio/federal/indicadores/indicadorCadastro.xhtml')
         print(driver.page_source)
@@ -60,16 +62,17 @@ def executar_todas_equipes(driver, pasta_download):
         except Exception as e:
             print("Erro ao clicar no botão de download ou selecionar a opção CSV:", e)
 
-        time.sleep(100)
+        # Ajustar o tempo conforme necessário, use um valor menor para teste
+        time.sleep(30)
         
         # Nome do arquivo CSV com o valor da checkbox
-        nome_arquivo_csv = f'sisab_todas_equipes_{valor_desejado}.csv'
+        nome_arquivo_csv = f'sisab__{valor_desejado}.csv'
         caminho_csv = os.path.join(pasta_download, nome_arquivo_csv)
 
         if os.path.exists(caminho_csv):
             print(f"Arquivo CSV baixado com sucesso: {caminho_csv}")
         else:
             raise FileNotFoundError(f"O arquivo CSV não foi encontrado em: {caminho_csv}")
-
+        
     finally:
-        driver.quit()
+        print("SCRIPT FINALIZADO")

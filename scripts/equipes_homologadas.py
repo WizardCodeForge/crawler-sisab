@@ -5,6 +5,8 @@ import os
 import time
 
 def executar_equipes_homologadas(driver, pasta_download):
+    valor_desejado = None
+
     try:
         # Abra o site
         driver.get('https://sisab.saude.gov.br/paginas/acessoRestrito/relatorio/federal/indicadores/indicadorCadastro.xhtml')
@@ -77,7 +79,8 @@ def executar_equipes_homologadas(driver, pasta_download):
             print("Erro ao clicar no botão de download ou selecionar a opção CSV:", e)
             driver.save_screenshot("screenshot.png")
 
-        time.sleep(100)
+        # Ajustar o tempo conforme necessário
+        time.sleep(30)
         
         # Nome do arquivo CSV com o valor da checkbox
         nome_arquivo_csv = f'sisab_equipes_homologadas_{valor_desejado}.csv'
@@ -89,4 +92,4 @@ def executar_equipes_homologadas(driver, pasta_download):
             raise FileNotFoundError(f"O arquivo CSV não foi encontrado em: {caminho_csv}")
 
     finally:
-        driver.quit()
+        print("Fechando o driver...")
