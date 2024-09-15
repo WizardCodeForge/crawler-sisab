@@ -5,7 +5,7 @@ import os
 import time
 import glob
 
-def executar_equipes_homologadas(driver, pasta_download):
+def executar_todas_equipes(driver, pasta_download):
     valor_desejado = None
 
     try:
