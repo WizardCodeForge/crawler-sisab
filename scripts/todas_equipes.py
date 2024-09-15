@@ -100,7 +100,7 @@ def executar_equipes_homologadas(driver, pasta_download):
                 os.rename(arquivo_original, caminho_csv)
                 print(f"Arquivo CSV renomeado com sucesso para: {caminho_csv}")
 
-                # (Anteriormente chamado aqui) processar_csv(caminho_csv) foi removido
+
             else:
                 print(f"O arquivo {nome_arquivo_csv} já existe e não será alterado.")
         else:
