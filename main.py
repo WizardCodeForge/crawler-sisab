@@ -6,7 +6,7 @@ import time
 
 def main():
     # Caminho onde o CSV será salvo
-    pasta_download = 'C:\\Users\\LKeuu\\OneDrive\\Documentos\\CSV\\'  # Usar scape com \\ para especificar caminho
+    pasta_download = 'C:\\Users\\LKeuu\\OneDrive\\Documentos\\projetos\\Crawler-Sisab\\import_csv_test'
     os.makedirs(pasta_download, exist_ok=True)
 
     # Inicializar o driver

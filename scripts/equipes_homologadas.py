@@ -3,6 +3,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import os
 import time
+import glob
 
 def executar_equipes_homologadas(driver, pasta_download):
     valor_desejado = None
@@ -80,16 +81,21 @@ def executar_equipes_homologadas(driver, pasta_download):
             driver.save_screenshot("screenshot.png")
 
         # Ajustar o tempo conforme necessário
-        time.sleep(30)
-        
-        # Nome do arquivo CSV com o valor da checkbox
-        nome_arquivo_csv = f'sisab_equipes_homologadas_{valor_desejado}.csv'
-        caminho_csv = os.path.join(pasta_download, nome_arquivo_csv)
+        print("Aguardando o download do arquivo...")
+        time.sleep(60)  # Ajustar conforme a necessidade
 
-        if os.path.exists(caminho_csv):
-            print(f"Arquivo CSV baixado com sucesso: {caminho_csv}")
+        # Verifique o nome do arquivo baixado
+        arquivos_csv = glob.glob(os.path.join(pasta_download, '*.csv'))
+        if arquivos_csv:
+            arquivo_original = arquivos_csv[0]  # Pode haver mais de um arquivo, escolha o mais recente
+            nome_arquivo_csv = f'sisab_equipes_homologadas_{valor_desejado}.csv'
+            caminho_csv = os.path.join(pasta_download, nome_arquivo_csv)
+
+            # Renomear o arquivo
+            os.rename(arquivo_original, caminho_csv)
+            print(f"Arquivo CSV renomeado com sucesso para: {caminho_csv}")
         else:
-            raise FileNotFoundError(f"O arquivo CSV não foi encontrado em: {caminho_csv}")
+            raise FileNotFoundError("Nenhum arquivo CSV encontrado para renomear.")
 
     finally:
-        print("Fechando o driver...")
+        print("SCRIPT FINALIZADO")
