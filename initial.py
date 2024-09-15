@@ -36,10 +36,10 @@ try:
     # Aguarde e selecione a caixa "Condição das Equipes"
     try:
         condicao_equipes = WebDriverWait(driver, 100).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, '#componente-equipes'))
+            EC.presence_of_element_located((By.CSS_SELECTOR, '#opacao-capitacao'))
         )
         select_condicao_equipes = Select(condicao_equipes)
-        select_condicao_equipes.select_by_visible_text('Considerar todas as equipes do município')
+        select_condicao_equipes.select_by_value('|HM|')  # Seleciona a opção com o valor '|HM|'
     except Exception as e:
         print("Erro ao selecionar 'Condição das Equipes':", e)
 
