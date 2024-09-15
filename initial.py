@@ -27,6 +27,7 @@ try:
         nivel_visualizacao = WebDriverWait(driver, 100).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, '#selectLinha'))
         )
+        from selenium.webdriver.support.ui import Select
         select_nivel_visualizacao = Select(nivel_visualizacao)
         select_nivel_visualizacao.select_by_value('ibge')  # Seleciona a opção com o valor 'ibge'
     except Exception as e:
