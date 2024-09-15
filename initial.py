@@ -12,7 +12,7 @@ service = Service(ChromeDriverManager().install())
 driver = webdriver.Chrome(service=service)
 
 # Caminho onde o CSV será salvo
-pasta_download = 'caminho/para/pasta/downloads'
+pasta_download = 'C:\\Users\\LKeuu\\OneDrive\\Documentos\\CSV'  # Usar scape com \\ para especificar caminho
 os.makedirs(pasta_download, exist_ok=True)
 
 try:
@@ -71,21 +71,31 @@ try:
     except Exception as e:
         print("Erro ao selecionar 'Competência':", e)
 
-    # Clique no botão de download
+    # Clique no botão de download e selecione CSV
     try:
-        WebDriverWait(driver, 100).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, '#componente-download'))
-        ).click()
-    except Exception as e:
-        print("Erro ao clicar no botão de download:", e)
+        # Clique no botão de download
+        download_button = WebDriverWait(driver, 100).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, '.btn-group .btn'))
+        )
+        download_button.click()
 
-    # Selecione a opção CSV no menu suspenso
-    try:
-        WebDriverWait(driver, 100).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, 'a[title="CSV"]'))  # Ajuste conforme necessário
-        ).click()
+        # Simular a chamada JavaScript para o download CSV
+        js_script = """
+        function simulateCsvDownload() {
+            var element = document.querySelector('a[onclick*="j_idt85"]');
+            if (element) {
+                element.click();
+            } else {
+                console.error("Elemento de download CSV não encontrado.");
+            }
+        }
+        simulateCsvDownload();
+        """
+        driver.execute_script(js_script)
+        print("Opção CSV selecionada com sucesso.")
     except Exception as e:
-        print("Erro ao selecionar o formato CSV:", e)
+        print("Erro ao clicar no botão de download ou selecionar a opção CSV:", e)
+        driver.save_screenshot("screenshot.png")  # Salve uma captura de tela para depuração
 
     # Aguarde o download do CSV 
     time.sleep(300)  # Ajustar o tempo conforme necessário
