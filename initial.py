@@ -4,7 +4,6 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import Select
 import os
 import time
 
@@ -45,35 +44,30 @@ try:
 
     # Aguarde e selecione a caixa "Competência"
     try:
-        competencia_select = WebDriverWait(driver, 100).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, '#competencia'))
+        # Abra o menu suspenso de competências
+        driver.find_element(By.CSS_SELECTOR, '.multiselect.dropdown-toggle').click()
+
+        # Obtenha todas as opções de checkbox
+        checkboxes = WebDriverWait(driver, 100).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.multiselect-container .checkbox input[type="checkbox"]'))
         )
-        # Obter todas as opções
-        options = competencia_select.find_elements(By.TAG_NAME, 'option')
 
-        if options:
-            # Encontrar a opção com o maior valor
-            max_value_option = max(options, key=lambda opt: int(opt.get_attribute('value')) if opt.get_attribute('value').isdigit() else -1)
-            max_value = max_value_option.get_attribute('value')
-            max_value_text = max_value_option.text
+        if checkboxes:
+            # Defina o valor da competência desejada (ajuste conforme necessário)
+            valor_desejado = '202407'
 
-            # Selecionar a opção encontrada usando JavaScript
-            driver.execute_script("arguments[0].selected = true;", max_value_option)
-            driver.execute_script("arguments[0].dispatchEvent(new Event('change', { bubbles: true }));", max_value_option)
-            print(f"Selecionado valor: {max_value}")
+            # Encontrar o checkbox com o valor desejado
+            for checkbox in checkboxes:
+                if checkbox.get_attribute('value') == valor_desejado:
+                    if not checkbox.is_selected():
+                        checkbox.click()
+                    break
+            print(f"Checkbox selecionado com valor: {valor_desejado}")
 
-            # Encontrar e clicar no botão correspondente ao valor selecionado
-            try:
-                # Esperar que o botão correspondente esteja presente e visível
-                button = WebDriverWait(driver, 100).until(
-                    EC.presence_of_element_located((By.XPATH, f"//button[@title='{max_value_text}']"))
-                )
-                button.click()
-                print(f"Botão selecionado: {max_value_text}")
-            except Exception as e:
-                print("Erro ao selecionar o botão correspondente:", e)
+            # Fechar o menu (se necessário)
+            driver.find_element(By.CSS_SELECTOR, '.multiselect.dropdown-toggle').click()
         else:
-            print("Nenhuma opção encontrada no seletor 'Competência'")
+            print("Nenhuma checkbox encontrada no menu 'Competência'")
     except Exception as e:
         print("Erro ao selecionar 'Competência':", e)
 
