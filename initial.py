@@ -49,20 +49,19 @@ try:
         driver.find_element(By.CSS_SELECTOR, '.multiselect.dropdown-toggle').click()
 
         # Obtenha todas as opções de checkbox
-        checkboxes = WebDriverWait(driver, 100).until(
+        options = WebDriverWait(driver, 100).until(
             EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.multiselect-container .checkbox input[type="checkbox"]'))
         )
 
-        if checkboxes:
-            # Defina o valor da competência desejada (ajuste conforme necessário)
-            valor_desejado = '202407'
+        if options:
+            # Encontrar o checkbox com o maior valor
+            max_value_checkbox = max(options, key=lambda opt: int(opt.get_attribute('value')) if opt.get_attribute('value').isdigit() else -1)
+            valor_desejado = max_value_checkbox.get_attribute('value')
 
-            # Encontrar o checkbox com o valor desejado
-            for checkbox in checkboxes:
-                if checkbox.get_attribute('value') == valor_desejado:
-                    if not checkbox.is_selected():
-                        checkbox.click()
-                    break
+            # Selecionar o checkbox com o maior valor
+            if not max_value_checkbox.is_selected():
+                max_value_checkbox.click()
+
             print(f"Checkbox selecionado com valor: {valor_desejado}")
 
             # Fechar o menu (se necessário)
@@ -88,8 +87,8 @@ try:
     except Exception as e:
         print("Erro ao selecionar o formato CSV:", e)
 
-    # Aguarde o download do CSV (ajuste o tempo de espera conforme necessário)
-    time.sleep(300)  # Ajuste o tempo de espera conforme necessário
+    # Aguarde o download do CSV 
+    time.sleep(300)  # Ajustar o tempo conforme necessário
 
     # Nome do arquivo CSV (ajuste conforme necessário)
     nome_arquivo_csv = 'relatorio.csv'  # Atualize se necessário
