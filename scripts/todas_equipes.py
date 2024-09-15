@@ -61,7 +61,9 @@ def executar_todas_equipes(driver, pasta_download):
             print("Erro ao clicar no botão de download ou selecionar a opção CSV:", e)
 
         time.sleep(100)
-        nome_arquivo_csv = 'relatorio.csv'
+        
+        # Nome do arquivo CSV com o valor da checkbox
+        nome_arquivo_csv = f'sisab_todas_equipes_{valor_desejado}.csv'
         caminho_csv = os.path.join(pasta_download, nome_arquivo_csv)
 
         if os.path.exists(caminho_csv):
