@@ -4,39 +4,6 @@ from selenium.webdriver.support import expected_conditions as EC
 import os
 import time
 import glob
-import pandas as pd
-import chardet
-
-def detectar_codificacao(caminho_csv):
-    """Detecta a codificação de um arquivo CSV."""
-    with open(caminho_csv, 'rb') as f:
-        resultado = chardet.detect(f.read())
-    return resultado['encoding']
-
-def processar_csv(caminho_csv):
-    try:
-        # Detectar a codificação atual do arquivo
-        codificacao_atual = detectar_codificacao(caminho_csv)
-        print(f"Codificação detectada: {codificacao_atual}")
-
-        # Ler o CSV com a codificação detectada
-        df = pd.read_csv(caminho_csv, encoding=codificacao_atual, header=None)
-
-        # Encontrar a linha onde está "UF"
-        linha_uf = df[df.apply(lambda row: row.astype(str).str.contains('UF', case=False).any(), axis=1)].index[0]
-        
-        # Manter a linha com "UF" e todas as linhas abaixo
-        df = df.iloc[linha_uf:].reset_index(drop=True)
-
-        # Verificar se a primeira linha após a remoção contém apenas '0' e remover se necessário
-        if df.shape[0] > 0 and df.iloc[0].isna().all():
-            df = df.drop(0).reset_index(drop=True)
-
-        # Salvar o CSV
-        df.to_csv(caminho_csv, index=False, encoding=codificacao_atual)
-        print(f"Arquivo CSV processado e atualizado: {caminho_csv}")
-    except Exception as e:
-        print(f"Erro ao processar o CSV: {e}")
 
 def executar_equipes_homologadas(driver, pasta_download):
     valor_desejado = None
@@ -133,14 +100,13 @@ def executar_equipes_homologadas(driver, pasta_download):
                 os.rename(arquivo_original, caminho_csv)
                 print(f"Arquivo CSV renomeado com sucesso para: {caminho_csv}")
 
-                # Processar o CSV (remover linhas até a linha com 'UF')
-                processar_csv(caminho_csv)
+                # (Anteriormente chamado aqui) processar_csv(caminho_csv) foi removido
             else:
                 print(f"O arquivo {nome_arquivo_csv} já existe e não será alterado.")
         else:
             print("Nenhum arquivo CSV válido encontrado para renomear.")
 
-        # Exclusão do arquivo `cadastro-individual.csv` se existir
+        # Exclusão do arquivo cadastro-individual.csv se existir
         if os.path.exists(arquivo_cadastro_individual):
             os.remove(arquivo_cadastro_individual)
             print(f"Arquivo {arquivo_cadastro_individual} excluído.")
