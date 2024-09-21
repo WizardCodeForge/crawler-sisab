@@ -2,7 +2,6 @@
 
 Automatize o processo de download dos cadastros das equipes de Saúde da Família (eSF) e Atenção Primária (eAP) diretamente do [SISAB](https://sisab.saude.gov.br/), facilitando o acesso aos dados essenciais para o modelo de **Capitação Ponderada** do Ministério da Saúde.
 
-![SISAB](https://www.vivver.com.br/wp-content/uploads/2021/02/hqdefault-1080x675.jpg)
 
 ---
 
