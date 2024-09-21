@@ -58,20 +58,12 @@ Baixe o [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/down
 
 2. Configure o caminho da pasta de download para salvar os arquivos CSV.
 
-3. Execute os scripts de acordo com o tipo de relatório que deseja baixar:
+3. Execute o arquivo main.py para baixar os CSVs das equipes homologadas e de todas as equipes:
 
-   - Para baixar **equipes homologadas**:
      ```python
-     from main import executar_equipes_homologadas
-     executar_equipes_homologadas(driver, pasta_download)
+     python main.py
      ```
-
-   - Para baixar **todas as equipes**:
-     ```python
-     from main import executar_todas_equipes
-     executar_todas_equipes(driver, pasta_download)
-     ```
-
+     
 🎉 O arquivo CSV será baixado, renomeado e salvo na pasta configurada.
 
 ---
